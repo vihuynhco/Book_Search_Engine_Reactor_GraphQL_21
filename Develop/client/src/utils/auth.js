@@ -3,10 +3,13 @@ import decode from 'jwt-decode';
 
 // create a new class to instantiate for a user
 class AuthService {
-  // get user data
   getProfile() {
     return decode(this.getToken());
   }
+  
+
+
+  // use jwt-decode to decode the token and return the user's id
 
   // check if user's logged in
   loggedIn() {
@@ -45,5 +48,6 @@ class AuthService {
     window.location.assign('/');
   }
 }
+
 
 export default new AuthService();
