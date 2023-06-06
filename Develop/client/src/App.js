@@ -12,7 +12,6 @@ import Navbar from './components/Navbar';
 const httpLink = createHttpLink(
   {
     uri: '/graphql',
-    cache: new InMemoryCache(),
   }
 );
 
@@ -34,7 +33,7 @@ headers: {
   
 function App() {
   return (
-    <ApolloProvider client={client}>  //to set the context of Apollo Client to include the token with every request
+    <ApolloProvider client={client}>  
     <Router>
       <>
         <Navbar />
