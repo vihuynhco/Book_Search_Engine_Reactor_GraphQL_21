@@ -7,25 +7,23 @@ const expiration = '2h';
 module.exports = {
     // function for our authenticated routes
     //modifying how token is retrieved from request object, b.c. GraphQL uses authorization headers with bearer token.
-    authMiddleware: function ({req}) {
-        //allows token to be sent via headers
-        const token = req.headers.authorization || '';
-        //if token is bearer, remove bearer name (7) and by trimming removes spaces to ensure only token is extracted
-        if (token.startsWith('Bearer ')) {
-            token = token.slice(7, token.length).trimLeft();
-        }
-        // console.log(token);
-        if(!token) {
-            throw new Error('You are not logged in.')
-        }
+    authMiddleware: function (req) {
+        let token = req.body.token || req.query.token || req.headers.authorization;
 
+        if (req.headers.authorization) {
+            token = token.split(' ').pop().trim();
+        }   
+        if (!token) {
+            return req;
+        }
+        // verify token and get user data out of it
         try {
             const {data} = jwt.verify(token, secret, {maxAge: expiration});
             req.user = data;
-        } catch (err) {
-            console.log('Token is not valid');
-            throw new Error('Token is not valid');
+        } catch {
+            console.log('Invalid token');
         }
+        return req;
     },
     //next fxn removed, graphql has its own resolver.
     
