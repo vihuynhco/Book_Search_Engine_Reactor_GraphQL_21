@@ -28,7 +28,7 @@ const SearchBooks = () => {
 
   // set up useEffect hook to save `savedBookIds` list to localStorage on component unmount
   // learn more here: https://reactjs.org/docs/hooks-effect.html#effects-with-cleanup
-  useEffect(() => {
+  useEffect (() => {
     return () => saveBookIds(savedBookIds);
   });
 
@@ -78,11 +78,15 @@ const SearchBooks = () => {
     }
 
     try {
-      const response = await saveBook(bookToSave, token);
+      // const response = await saveBook(bookToSave, token);
+      const {data}= await saveBook({
+        variables: { bookData: {...bookToSave}},
+      });
+      const updatedUser = data.saveBook;
 
-      if (!response.ok) {
-        throw new Error('book did not save');
-      }
+      // if (!response.ok) {
+      //   throw new Error('book did not save');
+      // }
 
       // if book successfully saves to user's account, save book id to state
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);

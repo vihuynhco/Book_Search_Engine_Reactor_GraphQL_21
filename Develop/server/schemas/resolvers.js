@@ -7,16 +7,12 @@ const resolvers = {
     //query for me, returns user data if user is logged in
     me: async (parent, args, context) => {
       if (context.user) {
-        const userData = await User.findOne({_id: context.user._id})
-        //removes password and __v from user data
-          .select('-__v -password')
-          .populate('savedBooks');
-        return userData;
+        return User.findOne({ _id: context.user._id });
       }
-      //if no user data, throw auth error
-      throw new AuthenticationError("You need to be logged in!");
+      throw new AuthenticationError('You need to be logged in!');
     },
   },
+
     Mutation: {
       //to add user: destructure username, email, and password from args
         addUser: async (parent, {username, email, password}) => {
@@ -43,25 +39,25 @@ const resolvers = {
             const token = signToken(user);
             return {token, user};
         },
-        saveBook: async (parent, {savedBooks}, context) => {
+        saveBook: async (parent, {bookData}, context) => {
+          //if context.user is true/user is authenticated then add book to savedBooks
           if (context.user) {
             const updatedBooks = await User.findOneAndUpdate(
               {_id: context.user._id},
-              {$addToSet: {savedBooks: {...savedBooks}} },
+              {$addToSet: {savedBooks: {...bookData}} },
               {new: true}
-            ).populate('savedBooks');
-            return updatedBooks;
+            );
           }
           throw new AuthenticationError("You need to be logged in!");
     },
     removeBook: async (parent, {bookId}, context) => {
       if (context.user) {
-        const updatedBooks = await User.findOneAndUpdate(
+       return await User.findOneAndUpdate(
           {_id: context.user._id},
-          {$pull: {savedBooks: {bookId: bookId}}},
+          {$pull: {savedBooks: {bookId}}},
           {new: true}
         );
-        return updatedBooks;
+      
       }
       throw new AuthenticationError("You need to be logged in!");
     },
