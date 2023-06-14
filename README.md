@@ -40,13 +40,13 @@
  To run the tests for the Book Search Engine, follow these steps:
 
 1. Ensure that the application and dependencies are installed by following the installation instructions.
-2. Open the terminal or command prompt and navigate to the root directory 
+2. Open the terminal or command prompt and navigate to the root directory
 3. Run the command: npm run develop to connect to your local server and graphQL
 4. Once you are connected to the server, you should  be able to access the app.
 
 ## Questions
 
-Please feel free to reach out to me via email or in github. 
+Please feel free to reach out to me via email or in github.
 
-Email: vihuynhco@gmail.com
+Email: <vihuynhco@gmail.com>
 Github: /vihuynhco
